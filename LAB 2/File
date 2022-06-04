@@ -1,0 +1,44 @@
+cqlsh>CREATE KEYSPACE liberary WITH REPLICATION = {'class':'SimpleStrategy','replication_factor':1};
+cqlsh>use liberary;
+
+cqlsh:liberary> CREATE TABLE liberary_info(Stud_id int, Stud_name text, Book_name text, Book_id int, Date_of_issue timestamp, counter_value counter, PRIMARY KEY(Stud_id,Stud_name,Book_name,Book_id,Date_of_issue));
+
+cqlsh:liberary> UPDATE liberary_info SET counter_value = counter_value + 1 WHERE Stud_id = 123 AND Stud_name = 'Sakshi' AND Book_name = 'BDA' AND Book_id = 455 AND Date_of_issue = '2000-09-24';
+
+cqlsh:liberary> UPDATE liberary_info SET counter_value = counter_value + 1 WHERE Stud_id = 124 AND Stud_name = 'Srishti' AND Book_name = 'CNS' AND Book_id = 456 AND Date_of_issue = '2001-10-13';
+
+cqlsh:liberary> UPDATE liberary_info SET counter_value = counter_value + 1 WHERE Stud_id = 125 AND Stud_name = 'Sara' AND Book_name = 'OOMD' AND Book_id = 457 AND Date_of_issue = '2002-11-13';
+
+cqlsh:liberary> select * from liberary_info;
+
+ stud_id | stud_name | book_name | book_id | date_of_issue                   | counter_value
+---------+-----------+-----------+---------+---------------------------------+---------------
+     123 |    Sakshi |       BDA |     455 | 2000-09-23 18:30:00.000000+0000 |             1
+     125 |      Sara |      OOMD |     457 | 2002-11-12 18:30:00.000000+0000 |             1
+     124 |   Srishti |       CNS |     456 | 2001-10-12 18:30:00.000000+0000 |             1
+
+(3 rows)
+cqlsh:liberary> UPDATE liberary_info SET counter_value = counter_value + 1 WHERE Stud_id = 125 AND Stud_name = 'Sara' AND Book_name = 'OOMD' AND Book_id = 457 AND Date_of_issue = '2002-11-13';
+cqlsh:liberary> select * from liberary_info;
+
+ stud_id | stud_name | book_name | book_id | date_of_issue                   | counter_value
+---------+-----------+-----------+---------+---------------------------------+---------------
+     123 |    Sakshi |       BDA |     455 | 2000-09-23 18:30:00.000000+0000 |             1
+     125 |      Sara |      OOMD |     457 | 2002-11-12 18:30:00.000000+0000 |             2
+     124 |   Srishti |       CNS |     456 | 2001-10-12 18:30:00.000000+0000 |             1
+
+(3 rows)
+cqlsh:liberary> UPDATE liberary_info SET counter_value = counter_value + 1 WHERE Stud_id = 123 AND Stud_name = 'Sakshi' AND Book_name = 'BDA' AND Book_id = 455 AND Date_of_issue = '2000-09-24'      ;
+cqlsh:liberary> select * from liberary_info;
+
+ stud_id | stud_name | book_name | book_id | date_of_issue                   | counter_value
+---------+-----------+-----------+---------+---------------------------------+---------------
+     123 |    Sakshi |       BDA |     455 | 2000-09-23 18:30:00.000000+0000 |             2
+     125 |      Sara |      OOMD |     457 | 2002-11-12 18:30:00.000000+0000 |             2
+     124 |   Srishti |       CNS |     456 | 2001-10-12 18:30:00.000000+0000 |             1
+cqlsh:liberary> select counter_value from liberary_info where Stud_id = 123 AND Stud_name = 'Sakshi' AND Book_name = 'BDA' AND Book_id = 455 AND Date_of_issue = '2000-09-24';
+
+ counter_value
+---------------
+             2
+
